@@ -11,7 +11,10 @@ import { COLORS, FONT, icons, SIZES } from "../../../constants";
 import styles from "./welcome.style";
 import { useRouter } from "expo-router";
 
-export default function Welcome() {
+type WelcomeProps = {
+  handleClck: (searchTerm: string) => void;
+};
+export default function Welcome({ handleClck }: WelcomeProps) {
   const router = useRouter();
 
   const [search, setSearch] = useState<string>("");
@@ -30,11 +33,18 @@ export default function Welcome() {
           <TextInput
             style={styles.searchInput}
             value={search}
-            onChangeText={(e) => {}}
+            onChangeText={(value) => {
+              setSearch(value);
+            }}
             placeholder="What are you looking for"
           />
         </View>
-        <TouchableOpacity style={styles.searchBtn} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.searchBtn}
+          onPress={() => {
+            handleClck(search);
+          }}
+        >
           <Image
             source={icons.search}
             resizeMode="contain"
@@ -52,6 +62,10 @@ export default function Welcome() {
                 ...styles.tab,
                 borderColor:
                   activeJobType === item ? COLORS.secondary : COLORS.gray2,
+              }}
+              onPress={() => {
+                setActiveJobType(item);
+                handleClck(item);
               }}
             >
               <Text

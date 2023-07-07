@@ -1,5 +1,5 @@
 import { Stack, useRouter, useSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   RefreshControl,
@@ -21,7 +21,7 @@ export default function JobDetails() {
   const params = useSearchParams();
   const router = useRouter();
 
-  const job_id = params.id || "";
+  const job_id = params.id ?? "";
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [activeTabs, setActiveTabs] = useState<string>(tabs[0]);
@@ -31,7 +31,11 @@ export default function JobDetails() {
     endPoint: "job-details",
   });
 
-  const onRefresh = () => {};
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch("1");
+    setRefreshing(false);
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>

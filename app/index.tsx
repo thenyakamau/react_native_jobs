@@ -1,5 +1,5 @@
 import { Stack, useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { COLORS, SIZES, icons, images } from "../constants";
 import ScreenHeaderButton from "../components/common/header/ScreenHeaderButton";
@@ -27,7 +27,11 @@ export default function Home() {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: SIZES.medium }}>
-          <Welcome />
+          <Welcome
+            handleClck={(searchTerm: string) => {
+              if (searchTerm) router.push(`/search/${searchTerm}`);
+            }}
+          />
           <PopularJobs />
           <NearbyJobs />
         </View>

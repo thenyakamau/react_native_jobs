@@ -17,6 +17,7 @@ export default function Company({ item }: Props) {
         <Image
           source={employer_logo ? { uri: employer_logo } : icons.jobImage}
           style={styles.logoImage}
+          resizeMode="contain"
         />
       </View>
       <View style={styles.jobTitleBox}>

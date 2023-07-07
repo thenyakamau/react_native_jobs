@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { RAPID_API_KEY } from "@env";
+import { set } from "react-native-reanimated";
 
 const rapidApiKey = RAPID_API_KEY;
 
 type Params = {
-  query?: string;
+  query?: string | string[];
   page?: string;
   num_pages?: string;
   endPoint: string;
@@ -22,7 +23,7 @@ export default function useFetch<T>({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const options = {
+  const [options, setOptions] = useState({
     method: "GET",
     url: `https://jsearch.p.rapidapi.com/${endPoint}`,
     params: {
@@ -35,7 +36,7 @@ export default function useFetch<T>({
       "X-RapidAPI-Key": rapidApiKey,
       "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
     },
-  };
+  });
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -55,7 +56,11 @@ export default function useFetch<T>({
     fetchData();
   }, []);
 
-  const refetch = () => {
+  const refetch = (currentPage: string) => {
+    const { params } = options;
+    params.page = currentPage;
+
+    setOptions({ ...options, params });
     fetchData();
   };
 
